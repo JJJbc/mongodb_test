@@ -1,0 +1,17 @@
+[
+  {
+    "id": "event1",
+    "main": "이벤트 1번",
+    "comment": "물은 공짜"
+  },
+  {
+    "id": "event2",
+    "main": "이벤트 2번",
+    "comment": "화장실도 공짜"
+  },
+  {
+    "id": "event3",
+    "main": "이벤트 3번",
+    "comment": "휴지도 공짜"
+  }
+]

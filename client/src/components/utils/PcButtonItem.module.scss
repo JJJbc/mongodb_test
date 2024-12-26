@@ -1,0 +1,17 @@
+.pc_item_container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  .pc_item_time {
+    width: 150px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+  }
+
+  .pc_item_price {
+    width: 150px;
+    height: 30px;
+  }
+}
