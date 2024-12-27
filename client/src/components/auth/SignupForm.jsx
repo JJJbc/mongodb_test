@@ -5,13 +5,13 @@ import { toast } from 'react-toastify';
 import Api from '../../axios/api';
 
 const SignupForm = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm(); // React Hook Form 훅 사용
-
-  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     try {

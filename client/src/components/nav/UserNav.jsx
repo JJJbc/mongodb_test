@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FaUserCircle } from 'react-icons/fa';
-import Api from '../../axios/api';
-import { useUser } from '../../context/UserContext';
 import style from './nav.module.scss';
 
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Api from '../../axios/api';
+import { FaUserCircle } from 'react-icons/fa';
+import { useRecoilState } from 'recoil';
+import { userState } from '../../atoms/userAtom';
+
 const UserNav = () => {
-  const { user, setUser } = useUser(); // 사용자 정보를 설정
+  const [{ user }, setUserInfo] = useRecoilState(userState);
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -15,7 +17,7 @@ const UserNav = () => {
       await Api.post('/api/auth/signout', {}, { withCredentials: true });
 
       // 사용자 정보와 토큰 제거
-      setUser(null); // Context에서 사용자 정보 제거
+      setUserInfo({ user: null, loading: false });
       localStorage.removeItem('token'); // 로컬 스토리지에서 토큰 제거
 
       // 로그인 페이지로 리다이렉트 (쿼리 파라미터 추가)

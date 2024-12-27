@@ -16,42 +16,31 @@ import com.exam.test.demo.seat.repository.SeatRepository;
 public class SeatService {
   private SeatRepository seatRepository;
   private final ModelMapper modelMapper;
-  private static final org.slf4j.Logger logger = LoggerFactory.getLogger(SeatService.class);
+  private static final Logger logger = LoggerFactory.getLogger(SeatService.class);
 
-  public SeatService(SeatRepository seatRepository, ModelMapper modelMapper) {
+  public SeatService(SeatRepository seatRepository, ModelMapper modelMapper) { // constructor 라고 한다
     this.seatRepository = seatRepository;
     this.modelMapper = modelMapper;
   }
 
-  public ResponseDto<List<SeatDto>> getSeatAll(){
+  public ResponseDto<List<SeatDto>> getSeatAll() {
     List<Seat> seatList = seatRepository.findAll();
 
-    List<SeatDto> seatDtoList = seatList.stream().map(seat -> modelMapper.map(seat, SeatDto.class)).toList();   
-    
+    logger.info("seatList: {}", seatList);
+
+    List<SeatDto> seatDtoList = seatList.stream()
+      .map(seat -> modelMapper.map(seat, SeatDto.class))
+      .toList();
+
+    logger.info("seatDtoList: {}", seatDtoList);
 
     return new ResponseDto<>(seatDtoList, "좌석 데이터 반환");
   }
 
-  public ResponseDto<SeatDto> SeatInsert(SeatDto seatDto){
-    try{
-      logger.info("Received SeatDto: {}", seatDto);
-        
-        Seat seat = modelMapper.map(seatDto, Seat.class);
-        logger.info("Mapped Seat entity: {}", seat);
+  public ResponseDto<String> addSeat(SeatDto seatDto) {
+    
+    Seat seat = seatRepository.save(modelMapper.map(seatDto, Seat.class));
 
-        Seat savedSeat = seatRepository.save(seat);
-        logger.info("Saved Seat entity: {}", savedSeat);
-
-        SeatDto savedSeatDto = modelMapper.map(savedSeat, SeatDto.class);
-        logger.info("Mapped saved SeatDto: {}", savedSeatDto);
-
-        return new ResponseDto<>(savedSeatDto, "추가되었습니다.");
-      
-    } catch (Exception e) {
-      logger.error("Error occurred while inserting seat", e);
-        return new ResponseDto<>(null, "오류가 발생했습니다: " + e.getMessage());
-    }
-
+    return new ResponseDto<>("", seat.getSeatNumber() + "번 좌석이 추가되었습니다.");
   }
-  
 }

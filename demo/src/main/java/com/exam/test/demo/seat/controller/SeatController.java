@@ -41,15 +41,15 @@ public class SeatController {
     
   }
 
-  @PostMapping("/insert")
-  public ResponseEntity<String> SeatInsert(@RequestBody SeatDto seatDto){
-    logger.info("@PostMapping: {}", seatDto);
+  @PostMapping("/add")
+  public ResponseEntity<ResponseDto<String>> addSeat(@RequestBody SeatDto seatDto) {
       try {
-        ResponseDto<SeatDto> result = seatService.SeatInsert(seatDto);
-        return ResponseEntity.ok().body("추가되었습니다.");
-      } catch (Exception e) {      
-        return ResponseEntity.badRequest().body("오류가 발생했습니다.");
+        logger.info("SeatDto: {}", seatDto);
+
+        ResponseDto<String> res = seatService.addSeat(seatDto); 
+        return ResponseEntity.ok().body(res);
+      } catch (Exception e) {
+        return ResponseEntity.internalServerError().body(new ResponseDto<>("", "서버 오류로 인해 좌석 추가에 실패하였습니다. 잠시 후 다시 시도해 주세요."));
       }
-    
   }
 }
